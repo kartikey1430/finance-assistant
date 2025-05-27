@@ -1,85 +1,98 @@
-# 📈 Asia Tech Stock Sentiment Assistant
+# 🧠 Finance Assistant – Multi-Agent AI System
 
-An AI-powered multi-agent assistant that fetches, analyzes, and vocalizes stock sentiment data for major Asian tech stocks using Yahoo Finance APIs. Built with Python, LangChain, FAISS, Streamlit, and speech libraries.
+A modular, multi-agent finance assistant that fetches, analyzes, and presents real-time financial data with voice interaction support and an intuitive UI.
+
+## 🚀 Features
+
+- 📊 **API Agent**: Fetches Asia tech stock data using `yfinance`
+- 🗞️ **Scraper Agent**: Retrieves market headlines from financial sources
+- 🧠 **Analysis Agent**: Performs sentiment analysis using `TextBlob`
+- 📚 **Retriever Agent**: Context-aware Q&A using vector index and LangChain
+- 🎙️ **Voice Agent**: Supports voice-based queries via STT + TTS
+- 🧩 **Streamlit UI**: Real-time visualization with dark/light theme toggle
+- 🌐 **FastAPI**: Backend orchestration of all agents
 
 ---
 
-## 🔧 Features
-
-- 🔍 Scrapes live market news headlines
-- 📉 Fetches real-time stock prices (TSM, Samsung, etc.)
-- 🤖 Classifies stock sentiment (positive, negative, neutral)
-- 🧠 Embeds and retrieves relevant news using FAISS + Langchain
-- 🗣️ Voice command interface to query and speak results
-- 🌐 Streamlit frontend for an interactive UI
-
----
-
-## 🗂️ Project Structure
+## 🗂️ Directory Structure
 
 finance-assistant/
+│
 ├── agents/
+│ ├── api_agent.py
 │ ├── analysis_agent.py
+│ ├── language_agent.py
 │ ├── retriever_agent.py
-│ ├── voice_agent.py
+│ └── voice_agent.py
+│
 ├── data_ingestion/
 │ ├── api_agent.py
-│ ├── scraper_agent.py
+│ └── scraper_agent.py
+│
 ├── orchestrator/
-│ ├── orchestrator.py
+│ └── orchestrator.py
+│
 ├── streamlit_app/
 │ └── app.py
-├── .env
+│
+├── main.py
+├── ai_tool_usage.md
 ├── requirements.txt
-├── README.md
-└── docs/ai_tool_usage.md
+└── README.md
 
+yaml
+Copy
+Edit
 
 ---
 
-## 🚀 How to Run the Project
+## 🛠️ Setup Instructions
 
-### Step 1: Install Requirements
+1. **Clone the Repo**
+   ```bash
+   git clone https://github.com/kartikey1430/finance-assistant.git
+   cd finance-assistant
 
-```bash
-pip install -r requirements.txt
+2. **Create Virtual Environment**
+    python -m venv venv
+    venv\Scripts\activate  # Windows
+    source venv/bin/activate  # Mac/Linux
 
-Step 2: Set Your API Key
+3. **Install Dependencies**
+    pip install -r requirements.txt
 
-Create a .env file with this inside:
 
-NEWSDATA_API_KEY=pub_e0e66da5a1984c6b8a06d0bd67d6d971
+How to Run
+1. Start FastAPI Server
+    python -m uvicorn main:app --reload
+    Visit: http://127.0.0.1:8000/docs
 
-Step 3: Run Components
+2. Launch Streamlit UI
+    streamlit run streamlit_app/app.py
 
-| Component       | Command                                  |
-| --------------- | ---------------------------------------- |
-| API Agent       | `python data_ingestion/api_agent.py`     |
-| Scraper Agent   | `python data_ingestion/scraper_agent.py` |
-| Retriever Agent | `python agents/retriever_agent.py`       |
-| Analysis Agent  | `python agents/analysis_agent.py`        |
-| Voice Agent     | `python -m agents.voice_agent`           |
-| Orchestrator    | `python orchestrator/orchestrator.py`    |
-| Streamlit App   | `streamlit run streamlit_app/app.py`     |
-| FastAPI Backend | `uvicorn main:app --reload`              |
+3. Use Voice Agent
+    python agents/voice_agent.py
 
-📊 Sample Output
 
-TSM: -2.12% → Sentiment: Negative
-005930.KQ: +1.35% → Sentiment: Positive
+Tech Stack
+    FastAPI + Uvicorn
+    Streamlit for dashboard UI
+    yfinance for stock data
+    TextBlob for sentiment
+    LangChain + FAISS for retrieval
+    SpeechRecognition + gTTS for voice I/O
 
-Tools & Libraries
-
-LangChain + HuggingFace
-FAISS vector search
-Streamlit
-yFinance (Yahoo Finance)
-pyttsx3 (Text-to-Speech)
-SpeechRecognition (Voice input)
-NewsData.io (Headline API)
+Sample API Endpoints
+    GET /api-agent → Tech stock sentiment
+    GET /scraper-agent → Market headlines
+    POST /retriever-agent → Ask finance-related questions
+    POST /analysis-agent → Analyze % change sentiment
 
 Author
+    Kartikey Agrawal
+    https://www.linkedin.com/in/kartikey-agrawal02
 
-Kartikey Agrawal
-B.Tech CSE, VIT Vellore
-https://www.linkedin.com/in/kartikey-agrawal02
+Status
+    Completed – All agents and interfaces tested & functional.
+
+---

@@ -1,53 +1,41 @@
 import speech_recognition as sr
 import pyttsx3
-from data_ingestion.api_agent import get_asia_tech_data
 
-def analyze_sentiment(change):
-    if change > 1:
-        return "positive"
-    elif change < -1:
-        return "negative"
-    return "neutral"
+from agents.retriever_agent import load_sample_docs, build_vector_index, get_relevant_info
 
 def speak(text):
     engine = pyttsx3.init()
+    engine.setProperty('rate', 175)
     engine.say(text)
     engine.runAndWait()
 
-def transcribe_speech():
+def listen():
     recognizer = sr.Recognizer()
-    mic = sr.Microphone()
+    with sr.Microphone() as source:
+        print("🎙️ Speak now...")
+        audio = recognizer.listen(source, timeout=5)
+        try:
+            query = recognizer.recognize_google(audio)
+            print(f"🗣️ You said: {query}")
+            return query
+        except sr.UnknownValueError:
+            return "Sorry, I didn't catch that."
+        except sr.RequestError:
+            return "Speech recognition service failed."
 
-    with mic as source:
-        print("🎤 Speak now...")
-        recognizer.adjust_for_ambient_noise(source)
-        audio = recognizer.listen(source)
+def main():
+    print("🔄 Initializing agents...")
+    docs = load_sample_docs()
+    vector_db = build_vector_index(docs)
 
-    try:
-        transcript = recognizer.recognize_google(audio)
-        print("📝 Transcription:", transcript)
-        return transcript
-    except sr.UnknownValueError:
-        print("❌ Could not understand audio")
-        return None
-    except sr.RequestError:
-        print("❌ Speech Recognition API unavailable")
-        return None
+    query = listen()
+    if "sorry" in query.lower():
+        speak("Sorry, I couldn't understand you. Please try again.")
+        return
 
-def handle_voice_command():
-    query = transcribe_speech()
-    if query:
-        speak(f"You said: {query}. Fetching stock data now.")
-        data = get_asia_tech_data()
-        if not data:
-            speak("Sorry, I couldn't fetch any stock data.")
-            return
-
-        for stock in data:
-            sentiment = analyze_sentiment(stock['change_percent'])
-            summary = f"{stock['ticker']} is showing a {sentiment} change of {stock['change_percent']} percent."
-            print(summary)
-            speak(summary)
+    response = get_relevant_info(query, vector_db)
+    print(f"🤖 Agent Response: {response}")
+    speak(response if response else "Sorry, I could not retrieve any relevant information.")
 
 if __name__ == "__main__":
-    handle_voice_command()
+    main()

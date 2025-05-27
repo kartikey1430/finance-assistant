@@ -1,2 +1,14 @@
-yfinance
 streamlit
+fastapi
+uvicorn
+textblob
+yfinance
+pandas
+matplotlib
+langchain
+sentence-transformers
+faiss-cpu
+openai
+pyttsx3
+speechrecognition
+pydantic

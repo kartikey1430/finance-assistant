@@ -1,11 +1,26 @@
 from textblob import TextBlob
 
+from textblob import TextBlob
+
+def analyze_sentiment(change_percent: float) -> str:
+    text = f"The stock changed by {change_percent:.2f}%"
+    blob = TextBlob(text)
+    polarity = blob.sentiment.polarity
+    if polarity > 0:
+        return "positive"
+    elif polarity < 0:
+        return "negative"
+    else:
+        return "neutral"
+
+
 def analyze_headlines(headlines: list[str]) -> str:
+    """
+    Analyze multiple headlines and return formatted sentiment report.
+    """
     insights = []
     for headline in headlines:
-        blob = TextBlob(headline)
-        polarity = blob.sentiment.polarity
-        tone = "positive" if polarity > 0 else "negative" if polarity < 0 else "neutral"
+        tone = analyze_sentiment(headline)
         insights.append(f"• {headline} → Sentiment: {tone}")
     
     return "\n".join(insights)

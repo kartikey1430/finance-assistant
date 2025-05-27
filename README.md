@@ -1,8 +1,8 @@
-# 🧠 Finance Assistant – Multi-Agent AI System
+# Finance Assistant – Multi-Agent AI System
 
 A modular, multi-agent finance assistant that fetches, analyzes, and presents real-time financial data with voice interaction support and an intuitive UI.
 
-## 🚀 Features
+## Features
 
 - 📊 **API Agent**: Fetches Asia tech stock data using `yfinance`
 - 🗞️ **Scraper Agent**: Retrieves market headlines from financial sources
